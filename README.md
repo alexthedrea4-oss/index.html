@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сладких снов</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Montserrat:wght@300;400&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    font-family: 'Montserrat', sans-serif;
+    color: #e8e6f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  /* Звёзды */
+  .stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite ease-in-out;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+
+  /* Луна */
+  .moon {
+    position: absolute;
+    top: 12%;
+    right: 15%;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle at 30% 30%, #fff8e7, #f0e6d0);
+    border-radius: 50%;
+    box-shadow: 0 0 40px rgba(255, 248, 231, 0.4);
+    opacity: 0.9;
+  }
+
+  /* Основной контейнер */
+  .container {
+    text-align: center;
+    z-index: 10;
+    max-width: 90%;
+    padding: 20px;
+  }
+
+  .phrase {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 3.2rem);
+    font-weight: 400;
+    letter-spacing: 1px;
+    line-height: 1.4;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 1.4s ease;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .phrase.active {
+    opacity: 1;
+    transform: translateY(-50%);
+  }
+
+  .phrase.exit {
+    opacity: 0;
+    transform: translateY(-70%);
+  }
+
+  .subtitle {
+    margin-top: 180px;
+    font-size: 0.95rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.5;
+    font-weight: 300;
+  }
+
+  /* Мягкое свечение */
+  .glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(180, 160, 255, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+  <div class="stars" id="stars"></div>
+  <div class="moon"></div>
+  <div class="glow"></div>
+
+  <div class="container">
+    <div class="phrase active" id="phrase">Тишина...</div>
+    <div class="subtitle">спокойной ночи</div>
+  </div>
+
+<script>
+  // Создаём звёзды
+  const starsContainer = document.getElementById('stars');
+  for (let i = 0; i < 60; i++) {
+    const star = document.createElement('div');
+    star.classList.add('star');
+    const size = Math.random() * 2.5 + 0.5;
+    star.style.width = size + 'px';
+    star.style.height = size + 'px';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.animationDelay = Math.random() * 4 + 's';
+    star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    starsContainer.appendChild(star);
+  }
+
+  // Фразы
+  const phrases = [
+    "Тишина...",
+    "Мир замедляется",
+    "Закрой глаза",
+    "Дыши спокойно",
+    "Пусть мысли уходят",
+    "Как лёгкий туман",
+    "Ночь обнимает",
+    "Сны будут мягкими",
+    "Как облака",
+    "Сладких снов",
+    "Спокойной ночи"
+  ];
+
+  let index = 0;
+  const phraseEl = document.getElementById('phrase');
+
+  function showNext() {
+    // Уход текущей фразы
+    phraseEl.classList.remove('active');
+    phraseEl.classList.add('exit');
+
+    setTimeout(() => {
+      index = (index + 1) % phrases.length;
+      phraseEl.textContent = phrases[index];
+      phraseEl.classList.remove('exit');
+      
+      // Небольшая задержка перед появлением
+      setTimeout(() => {
+        phraseEl.classList.add('active');
+      }, 50);
+    }, 1400);
+  }
+
+  // Меняем фразу каждые 3.8 секунды
+  setInterval(showNext, 3800);
+</script>
+
+</body>
+</html>
